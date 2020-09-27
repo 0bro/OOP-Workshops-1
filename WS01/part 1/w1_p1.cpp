@@ -1,3 +1,9 @@
+// Name: Muhammad Ibrahi Muhammad Yusoof
+// Email: imuhammad-yusoof@myseneca.ca
+// SEQ: 164366189
+// Date: September 25 2020
+//
+
 // Workshop 1 - Linkage, Storage Duration, Namespaces, and OS Interface
 // Cornel - 2020/01/08
 
@@ -20,6 +26,7 @@ codes
 // TODO: write the prototype for the main function
 //         to accept command line arguments
 
+int main(int argc, char *argv[])
 {
 	std::cout << "Command Line:\n";
 	// TODO: print the command line here, in the format
@@ -27,9 +34,12 @@ codes
 	// 2: second argument
 	// 3: third argument
 
+	
+	// Display all arguments
+	for (int i = 0; i < argc; i++)
+		std::cout << i + 1 << ": " << argv[i] << std::endl;
 
 	std::cout << std::endl;
-
 
 	// the archive can store maximum 10 events
 	sdds::Event archive[10];
@@ -38,7 +48,7 @@ codes
 
 	sdds::Event currentEvent;
 
-	const size_t secInDay = 60u * 60u * 24u;// day has 86400 seconds
+	const size_t secInDay = 60u * 60u * 24u; // day has 86400 seconds
 
 	for (auto day = 1; day < argc; ++day)
 	{
@@ -100,4 +110,6 @@ codes
 	for (auto i = 0u; i < idxArchive; ++i)
 		archive[i].display();
 	std::cout << "--------------------\n";
+
+	return 0;
 }
