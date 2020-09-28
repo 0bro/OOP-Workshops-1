@@ -1,0 +1,28 @@
+// Name: Muhammad Ibrahi Muhammad Yusoof
+// Email: imuhammad-yusoof@myseneca.ca
+// SEQ: 164366189
+// Date: September 27 2020
+//
+
+Upon completing this assignment, I was able to have a better understanding of the lecture material, and how it is relevent to 
+my understanding of programming. Since scopes seemed to be an easy concept, I had thought linkage would be just as easy however, 
+trying to link the ::g_sysClock variable between modules felt impossible, I even thought it was unnecesssary and redundant to do so. 
+Later I learned that I needed to declare it in both the implementation and header file. The difference between external and internal 
+linkage made much sense after having learned it. External linkage is the link between multiple modules, sharing the same data, such as the 
+::g_sysClock. This variable shared the same data between both modules synchronously. However an internal linakge only shares the same data 
+within the same module, such as the the Event currentEvent. It shares data within the same module, within the same scope.
+
+
+Learning about static variables, I was instantly relieved this conecpt was real, I had previously thought inorder to share the 
+same infromation between all classes would require extra functions/variables. However learning about static variables,
+I was able to find a perfect fit within my program. Being able to use a static variable in a function, to increment for each row that had been 
+displayed made it so that I didn't have to store the same infromationin different places.
+
+
+I started off my program with making my description dynamically allocated so that I could practice maintaining a mindset where I'm constantly aware of
+memory leaks. As a result I didn't necessarily need to upgrade my program. I ran into problems because I didn't have a good understanding of 
+the archive feature, I had thought it was a simple copy, and that I didn't require a copy constructor, however later on using valgrind,
+I realized I did. Then having written the copy constructor, I also realized I needed an assignment operator. The main problem I ran into 
+with my dynamic Allocation was that I had misunderstood the archive function.
+
+

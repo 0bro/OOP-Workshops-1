@@ -1,7 +1,7 @@
 // Name: Muhammad Ibrahi Muhammad Yusoof
 // Email: imuhammad-yusoof@myseneca.ca
 // SEQ: 164366189
-// Date: September 25 2020
+// Date: September 27 2020
 //
 
 // Workshop 1 - Linkage, Storage Duration, Namespaces, and OS Interface
@@ -34,7 +34,7 @@ int main(int argc, char *argv[])
 	// 2: second argument
 	// 3: third argument
 
-	
+
 	// Display all arguments
 	for (int i = 0; i < argc; i++)
 		std::cout << i + 1 << ": " << argv[i] << std::endl;

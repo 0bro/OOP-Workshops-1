@@ -1,3 +1,9 @@
+// Name: Muhammad Ibrahi Muhammad Yusoof
+// Email: imuhammad-yusoof@myseneca.ca
+// SEQ: 164366189
+// Date: September 27 2020
+//
+
 #ifndef EVENT_H_SDDS
 #define EVENT_H_SDDS
 
