@@ -9,6 +9,8 @@
 
 #include <iostream>
 #include <cmath>
+#include <cstring>
+
 // Global variable tracks timer between modules
 extern unsigned int g_sysClock;
 
