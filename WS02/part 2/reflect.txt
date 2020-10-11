@@ -1,0 +1,32 @@
+// Name: Muhammad Ibrahi Muhammad Yusoof
+// Email: imuhammad-yusoof@myseneca.ca
+// SEQ: 164366189
+// Date: October 4 2020
+
+
+Starting out, I was having a hard time understanding the objective, but once I got started with the header for my modules,
+it was easy to understand the direction of the lab. I had alot of trouble trying to understand the chrono functions, and variables,
+but the longer I researched the better I understood how to implement it. Doing part 2, I got confused because the move operator was
+taking just aslong as my assignment operator, and I thought it was just my computer, but once I got into my reflection, I learned
+that it was expected to be much shorter than the copy operator. After investigating for a bit, I realized that the concept of
+copy operators and contructors were very different from move operators and constructors. 
+
+It was because I was copying the values of each value from the src, instead of taking the address of the src. Once I did this, I not only 
+realized the difference, but also understood why I should have expected shorter wait times.
+
+The reason for shorter time duration for move operations, is because move operations only copy the address of the entire array, instead 
+of setting a new address, then copying over each Individual value of each index(This is whats done with Copy operations).
+
+Example:
+MOVE:
+m_recordSize = src.m_recordSize;
+
+Simply copying the address of the entire array
+
+COPY:
+// setting a new address for the records
+m_records = new string[m_recordSize];
+
+// Then copying each value
+for (int i = 0; i < m_recordSize; i++)
+    m_records[i].assign(src.m_records[i]);

@@ -23,7 +23,7 @@ namespace sdds
             // Get a word with the delimeter of a space
             getline(file, word, ' ');
             // If the word is not empty then add to count
-            if (word[0] != ' ')
+            if (word[0] != ' ' && file)
             {
                 // increment count
                 count++;

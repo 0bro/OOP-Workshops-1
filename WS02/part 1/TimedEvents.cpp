@@ -49,7 +49,7 @@ namespace sdds
 
             out << " " << src.records[i].m_unitsOfTime << endl;
         }
-        out << "--------------------------";
+        out << "--------------------------" ;
         return out;
     }
 
