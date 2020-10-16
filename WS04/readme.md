@@ -1,28 +1,25 @@
-# Workshop #5: Constructors Destructors and Current object
-* Version 1.0 
+# Workshop 4: Containers
 
-In this workshop, you will use Constructors, a Destructor and reference of the current object to simulate a Box for holding bulk material. 
+In this workshop, you will code three classes that are in composition and aggregation relations. The classes will simulate a very simplified form of reservation management for a restaurant. The restaurant will manage a collection of reservations (composition); a messaging system will send confirmations for the reservation.
+
+
 
 ## Learning Outcomes
 
 Upon successful completion of this workshop, you will have demonstrated the abilities to:
 
-- define default constructor
-- define custom constructor with different number of arguments
-- define a Destructor to prevent memory leak.
-- Use reference of the current object 
-- describe to your instructor what you have learned in completing this workshop
+- design and code composition and aggregation class relationships
+- use the member functions of the string class to parse a string into tokens based on simple rules
+- design and code a class that manages a dynamically allocated array of pointers to objects
+
 
 ## Submission Policy
 
-The workshop is divided into two coding parts; part 1, **LAB** and part 2, **DIY**  and one non-coding part:
+The workshop is divided into two coding parts and one non-coding part:
 
-- ***LAB*** (part 1): worth 50% of the workshop's total mark, is due on **Wednesday at 23:59:59** of the week of your scheduled lab.
-> Please note that the LAB (part 1) section is **not to be started in your lab session**. You should start it on your own before the day of your lab and and join the lab session to ask for help and correct your mistakes.
-- ***DIY*** (part 2): worth 50% of the workshop's total mark, is due on **Sunday at 23:59:59** of the week of your scheduled lab.  Submissions of *DIY* part that do not contain the *reflection* are not considered valid submissions and are ignored.
-- *reflection*: non-coding part, to be submitted together with *DIY* part. The reflection doesn't have marks associated to it, but can incur a **penalty of max 40% of the whole workshop's mark** if your professor deems it insufficient (you make your marks from the code, but you can lose some on the reflection).
-
-If at the deadline the workshop is not complete, there is an extension of **one day** when you can submit the missing parts.  **The code parts that are submitted late receive 0%.**  After this extra day, the submission closes; if the workshop is incomplete when the submission closes (missing at least one of the coding or non-coding parts), **the mark for the entire workshop is 0%**.
+- *Part 1*: worth 0% of the workshop's total mark, is optional and designed to assist you in completing the second part.
+- *Part 2*: worth 100% of the workshop's total mark, is due on **Sunday at 23:59:59** of the week of your scheduled lab.  Submissions of *Part 2* that do not contain the *reflection* are not considered valid submissions and are ignored.
+- *reflection*: non-coding part, to be submitted together with *Part 2*. The reflection does not have marks associated to it, but can incur a **penalty of max 40% of the whole workshop's mark** if your professor deems it insufficient (you make your marks from the code, but you can lose some on the reflection).
 
 Every file that you submit must contain (as a comment) at the top **your name**, **your Seneca email**, **Seneca Student ID** and the **date** when you completed the work.
 
@@ -39,11 +36,11 @@ If the file contains work that is not yours (you found it online or somebody pro
 All your code should be compiled using this command on `matrix`:
 
 ```bash
-g++ -Wall -std=c++11 -g -o ws file1.cpp file2.cpp ...
+/usr/local/gcc/9.1.0/bin/g++ -Wall -std=c++17 -g -o ws file1.cpp file2.cpp ...
 ```
 
 - `-Wall`: compiler will report all warnings
-- `-std=c++11`: the code will be compiled using the C++11 standard
+- `-std=c++17`: the code will be compiled using the C++17 standard
 - `-g`: the executable file will contain debugging symbols, allowing *valgrind* to create better reports
 - `-o ws`: the compiled application will be named `ws`
 
@@ -55,412 +52,484 @@ valgrind ws
 
 To check the output, use a program that can compare text files.  Search online for such a program for your platform, or use *diff* available on `matrix`.
 
-> Note: All the code written in workshops and the project must be implemented in the **sdds** namespace.
-# LAB (50%) The Box Module
 
-Your task for this lab is to create a **Box** module for holding bulk material. The **Box** can be created in different ways; 
-- By default a **Box** is created as a cube with no content; 12x12x12 inches.  
-- A Cubical Box is created with one value for all the three dimensions and an optional value for the name of the content of the box.
-- A freestyle box is created with three different values for width, length, and height of the box with an optional value for the name of the box.
+If, when you try to compile/submit the workshop on matrix, you encounter an error regarding `/lib64/libstdc++.so.6: version 'CXXABI_1.3.9 not found'`, add the following line at the end of your `.bashrc` file (this is a hidden text file located in the home folder--`~`--of your matrix account):
 
-When constructed, the boxes are empty with or without a content name.
-
-The content name of the box can be set later with a member function.
-
-After the box is created the bulk material can be poured into the box by specifying the quantity of the material. If the quantity of the poured material causes an overflow, that is being more than the capacity of the box, The box becomes useless and unusable. These boxes are thrown away and the material inside is discarded. 
-
-You can pour the material from one box into another box, only if the contents are the same. If the material is too much for the capacity of the box, the target box will become full and the source box will lose the exact amount of material poured into the target box.<br />
-If the materials are not the same, however, the target box with mixed material will become useless and unusable. The source box however will just lose the material poured into the discarded box.
-
-Note that a Box can not have a dimension value less than 5 inches or greater than 36 inches.
-
-## Implementation
-
-To implement the Box do the following:
-
-Create a class called Box that has the following member variables: (Box Module)
-
-```C++
-    char* m_contentName;   // the conent name pointer:
-                           // this pointer holds the name of the material to be kept in the box
-                           // dynamically
-    int m_width;           // The dimensions of the box in Inches
-    int m_height;
-    int m_length;
-    int m_contentVolume;   // the content volume:
-                           // This variable holds the volume of the material currently in 
-                           // the box in Cubic Inches
+```
+export LD_LIBRARY_PATH=/usr/local/gcc/9.1.0/lib64:$LD_LIBRARY_PATH
 ```
 
-Also create the following **private member functions** for the internal processes of the Box:
+After you edit the file, logout and login again--this problem should go away.
 
-```C++
-      void setName(const char* Cstr);
+
+
+
+## Part 1 (0%)
+
+The first portion of this workshop consists of modules:
+- `w4` (supplied)
+- `Reservation`
+
+Enclose all your source code within the `sdds` namespace and include the necessary guards in each header file.
+
+
+### `w4` Module (supplied)
+
+
+**Do not modify this module!**  Look at the code and make sure you understand it.
+
+
+
+### `Reservation` Module
+
+This module defines a class that holds information about a single reservation at a restaurant for a date/time in October.
+
+Design and code a class named `Reservation` that should be able to store the following information (for each attribute, you can chose any type you think is appropriate--you must be able to justify the decisions you make):
+
+- **reservation id**: an array of characters
+- **the name on the reservation**
+- **the email** that can be used to send confirmation that the reservation can be honored or cannot
+- **the number of people** in the party
+- **the day** when the party expects to come (for simplicity, the day is an integer between 1 and 31)
+- **the hour** when the party expects to come (for simplicity, the hour is an integer between 1 and 24)
+
+
+***Public Members***
+- a default constructor
+- `Reservation(const std::string& res)`: A constructor that receives the reservation as a string; this constructor is responsible for extracting information about the reservation from the parameter and storing it in the instance's attributes. The parameter will always have the following format:
+  ```
+  ID:NAME,EMAIL,PARTY_SIZE,DAY,HOUR
+  ```
+  This constructor should remove all leading and trailing spaces from the **beginning and end** of any token in the string.
+
+  When implementing the constructor, consider the following functions:
+  - [std::string::substr()](https://en.cppreference.com/w/cpp/string/basic_string/substr)
+  - [std::string::find()](https://en.cppreference.com/w/cpp/string/basic_string/find)
+  - [std::string::erase()](https://en.cppreference.com/w/cpp/string/basic_string/erase)
+  - [std::stoi()](https://en.cppreference.com/w/cpp/string/basic_string/stol)
+
+
+***Friend Helpers***
+- overload the insertion operator to insert the content of a reservation object into an **ostream** object:
+  - if the hour is between 6AM and 9AM (inclusive), the kitchen serves breakfast:
+  ```
+  Reservation ID: NAME  <email>    Breakfast on day DAY @ HOUR:00 for #PARTY_SIZE people.
+  ```
+  - if the hour is between 11AM and 3PM (inclusive), the kitchen serves lunch:
+  ```
+  Reservation ID: NAME  <email>    Lunch on day DAY @ HOUR:00 for #PARTY_SIZE people.
+  ```
+  - if the hour is between 5PM and 9PM (inclusive), the kitchen serves dinner:
+  ```
+  Reservation ID: NAME  <email>    Dinner on day DAY @ HOUR:00 for #PARTY_SIZE people.
+  ```
+  - at any other time the kitchen is closed and only drinks can be served:
+  ```
+  Reservation ID: NAME  <email>    Drinks on day DAY @ HOUR:00 for #PARTY_SIZE people.
+  ```
+  - the name on the reservation should be printed on a field of size 10, aligned to the right
+  - the email on the reservation (including the characters `<` and `>`) should be printed on a field of size 20, aligned to the left.
+  - this operator should insert the endline character before returning control.
+
+
+
+### Sample Output
+
+When the program is started with the command (the file `data.txt` is provided):
 ```
-The function **setName** is used to set the name of the content of the Box dynamically to the incoming CString argument:
-- Check the Cstr argument for being null; if it is null, then take no action and exit the function otherwise go to the next step.
-- delete the Box's content name just in case it has previously allocated memory (*ie the name had been set before*)
-- allocate memory for the content name to the size of the Cstr + 1 for the null byte
-- copy the Cstr into the content name.
-
-
-```C++
-      void setUnusable();
+w4.exe data.txt
 ```
-This function sets the **Box** to an unusable and recognizable *empty state* as follows:
-- deletes the content name and sets it to null
-- sets all the other member variables to -1 
-
-```C++
-      bool isUnusable()const;
+the output should look like:
 ```
-This function returns true if the Box is unusable. You can do this by checking any of the member variables that represent a dimension of the Box are equal to -1 which means it's unusable.
+Command Line:
+--------------------------
+  1: w4.exe
+  2: data.txt
+--------------------------
 
-```C++
-      bool hasContent()const;
-```
-This function return true if the content volume or **quantity()** is greater than zero.
-
-## Constructors 
-
-```C++
-    Box();
-```
-The default constructor will set the member variables to the following default values;
-- all the three dimensions are set to 12 inches
-- the content name pointer is set to null
-- the content volume is set to zero.
-
-Note that the default constructor sets the box to an empty cubical 12-inch box that is empty and ready to be used. 
-
-```C++
-    Box(int sideLength, const char* contentName = nullptr);
-```
-This constructor will make a cubical box (all three sides the same size).<br />
-The constructor will first set the content name pointer to **nullptr** and then:
-- if any of the side lengths is not between 5 and 36, the box is set to be unusable and the function ends.
-- if the side length is valid, then all three dimensions (width, height and length) are set to the sideLength value.
-- the content volume is set to zero.
-- Name is set to the content name value (using setName function)
-
-
-```C++
-    Box(int width, int height, int length, const char* contentName = nullptr);
-```
-This constructor will make a freestyle box.<br />
-The constructor will first set the content name pointer to **nullptr** and then:
-- if any of the width, height and length are not between 5 and 36, the box is set to be unusable and the function ends.
-- if the dimensions are valid, then all three dimensions (m_width, m_height and m_length) are set to the corresponding arguments.
-- the content volume is set to zero.
-- The Box's content name is set to the respective argument (using the setName function)
-
-## Destructor
-
-Deallocate the allocated memory for the content name.
-
-## Public Member Functions
-
-```C++
-  int capacity()const;
-```
-This function returns the product of m_width, m_height and m_length. (i.e. the volume of the box)
-
-```C++
-  int quantity()const;
-```
-This function return the content volume member variable.
-
-```C++
-  Box& setContent(const char* contentName);
-```
-setContent sets the content name to the parameter using the set name function and returns a reference of the current object.<br />
-However if the box is already filled with material (use hasContent() function to validate) and has a non-empty content name, then the box is set to be unusable. This prevents mixing different material in a box.
-In either case the reference of *the current object is always returned*.
-
-```C++
-  std::ostream& display()const;
-```
-This function displays the box information and returns the **cout** object.
-Here is the format and sequence of the printed data:  
-- In 30 spaces, left justified and spaces filled with the dot **'.'** the content name is printed. if the content name is null **"Empty box"** is printed instead
-- one space
-- in 2 spaces padded with zero, right justified **width** is printed
-- the character **'x'**
-- in 2 spaces padded with zero, right justified **height** is printed
-- the character **'x'**
-- in 2 spaces padded with zero, right justified **length** is printed
-- one space
-- in 6 spaces, right justified **quantity()** is printed
-- the character **'/'**
-- the **capacity()** is printed and then **" C.I."**
-
-However if the object is unusable the following statement is printed: <br />
-**"Unusable box, discard the content, and recycle."**<br />
-
-In any case the object **cout** is returned.
-
-```C++
-  Box& add(int quantity);
-```
-If the parameter quantity is a positive value and the quantity value fits in the empty space in the box the quantity will be added to the content volume, otherwise the object will be set to unusable.
-In any case the reference of the current object is returned.
-
-> you can check this by comparing the sum of the qty argument and the **quantity()** of the box and the **capacity()** of the box. If the sum is less than the capacity, you are good to go, otherwise the box is unusable.
-
-```C++
-  Box& add(Box& B);
-```
-This function pours the content of one box into another. If the target box is full, the rest of the material remains in the source box **B**. If the target box is empty and has no name, it will get the same name as the source box. If the material are not the same, the target box becomes unusable and the source box will lose the material poured in the target box.<br />
-Here is the source code for this funciton:
-```C++
-  if (m_contentName == nullptr || quantity() == 0) {
-     setContent(B.m_contentName);
-  }
-  if (strcmp(m_contentName, B.m_contentName) == 0) {
-     if (quantity() + B.quantity() <= capacity()) {
-        add(B.quantity());
-        B.m_contentVolume = 0;
-     }
-     else {
-        B.m_contentVolume -= (capacity() - quantity());
-        m_contentVolume = capacity();
-     }
-  }
-  else {
-     if (quantity() + B.quantity() <= capacity()) {
-        B.m_contentVolume = 0;
-     }
-     else {
-        B.m_contentVolume -= (capacity() - quantity());
-     }
-     setUnusable();
-  }
-  return *this;
+Reservations
+--------------------------
+Reservation RES-001:       John  <john@email.com>        Drinks on day 3 @ 5:00 for 2 people.
+Reservation RES-002:      David  <david@email.com>       Breakfast on day 4 @ 6:00 for 1 people.
+Reservation RES-003:       Sara  <sara@email.com>        Breakfast on day 5 @ 7:00 for 2 people.
+Reservation RES-004:        Ana  <ana@email.com>         Breakfast on day 5 @ 8:00 for 1 people.
+Reservation RES-005:       John  <john@email.com>        Breakfast on day 4 @ 9:00 for 1 people.
+Reservation RES-006:    Vanessa  <vanessa@email.com>     Drinks on day 3 @ 10:00 for 2 people.
+Reservation RES-007:       Mike  <mike@email.com>        Lunch on day 4 @ 11:00 for 4 people.
+Reservation RES-008:       Mike  <mike@email.com>        Lunch on day 5 @ 12:00 for 8 people.
+Reservation RES-009:        Dan  <dan@email.com>         Lunch on day 3 @ 13:00 for 2 people.
+Reservation RES-010:      Donna  <donna@email.com>       Lunch on day 5 @ 14:00 for 5 people.
+Reservation RES-011:        Ana  <ana@email.com>         Lunch on day 4 @ 15:00 for 4 people.
+Reservation RES-012:       John  <john@email.com>        Drinks on day 5 @ 16:00 for 2 people.
+Reservation RES-013:       Sara  <sara@email.com>        Dinner on day 3 @ 17:00 for 6 people.
+Reservation RES-014:   Jennifer  <jenn@email.com>        Dinner on day 5 @ 18:00 for 6 people.
+Reservation RES-015:       Stan  <stan@email.com>        Dinner on day 4 @ 19:00 for 5 people.
+Reservation RES-016:      Chris  <chris@email.com>       Dinner on day 4 @ 20:00 for 3 people.
+Reservation RES-017:    Vanessa  <vanessa@email.com>     Dinner on day 4 @ 21:00 for 4 people.
+Reservation RES-018:      David  <david@email.com>       Drinks on day 5 @ 22:00 for 4 people.
+Reservation RES-019:      Chris  <chris@email.com>       Drinks on day 3 @ 23:00 for 1 people.
+Reservation RES-020:      Donna  <donna@email.com>       Drinks on day 4 @ 24:00 for 3 people.
+--------------------------
 ```
 
 
-## LAB Submission (part 1)
 
-Upload your source code and the tester program (**Box.cpp, Box.h and boxMain.cpp**) to your `matrix` account. Compile and run your code using the `g++` compiler as shown above and make sure that everything works properly.
+
+### Test Your Code
+
+To test the execution of your program, use the same data as shown in the output example above.
+
+Upload your source code to your `matrix` account. Compile and run your code using the latest version of the `g++` compiler (available at `/usr/local/gcc/9.1.0/bin/g++`) and make sure that everything works properly.
 
 Then, run the following command from your account (replace `profname.proflastname` with your professor’s Seneca userid):
 ```
-~profname.proflastname/submit 244/w4/p1
+~profname.proflastname/submit 345_w4_p1
 ```
 and follow the instructions.
 
-> **:warning:Important:** Please note that a successful submission does not guarantee full credit for this workshop. If the professor is not satisfied with your implementation, your professor may ask you to resubmit. Re-submissions will attract a penalty.
+***This part represents a milestone in completing the workshop and is not marked!***
 
 
 
-# DIY (50%)
+ 
 
-Files to submit:  
-```Text
-NameTag.cpp
-NameTag.h
+
+
+
+
+ 
+## Part 2 (100%)
+
+The second part of this workshop upgrades your solution to include two more modules:
+- `Restaurant`
+- `ConfirmationSender`
+
+The module `Reservation` doesn't need any change.
+
+
+
+### `Restaurant` Module
+
+Add a `Restaurant` module to your project. This module should maintain a dynamically allocated array of objects of type `Reservation`: `Reservation*` (each element of the array is an object of type `Reservation`).
+
+***Public Members***
+
+- `Restaurant(Reservation* reservations[], size_t cnt)`: a constructor that receives as a parameter an array of pointers to objects of type `Reservation` (i.e., each element of the array is a pointer). If you need a refresh on arrays of pointers, re-read the material from the last term (chapter **Abstract Base Classes**, section **Array of Pointers**).
+  - this constructor should store **copies** of all reservations
+
+- add any other special members that are necessary to manage the reservations stored
+
+- `size_t size() const`: return how many reservations are in the system.
+
+
+
+***Friend Helpers***
+
+- overload the insertion operator to insert the content of a `Restaurant` object into an **ostream** object:
+  - if there are no reservations:
+  ```
+  --------------------------
+  Fancy Restaurant
+  --------------------------
+  The object is empty!
+  --------------------------
+  ```
+  - if there are reservations:
+  ```
+  --------------------------
+  Fancy Restaurant
+  --------------------------
+  RESERVATION
+  RESERVATION
+  ...
+  --------------------------
+  ```
+
+
+
+
+
+### `ConfirmationSender` Module
+
+Add a `ConfirmationSender` module to your project. The purpose of this module is to receive all the reservations from multiple restaurants, and contact the recipients with a confirmation message.
+
+This module should maintain a dynamically allocated array of **pointers** to objects of type `Reservation`: `const sdds::Reservation**` (each element of the array is a pointer to an object of type `Reservation`).
+
+
+***Public Members***
+
+- add any special members that are necessary to manage the resource (the resource is an **array of pointers**; your class must manage this array, but the objects at the addresses stored in the array are managed outside this class)
+
+- `ConfirmationSender& operator+=(const Reservation& res)`: add the address of the reservation `res` to the array.
+  - if the address of `res` is already in the array, this operator does nothing
+  - resize the array to make room for `res`
+  - store the **address** of `res` in the array (your function should not make copies of the reservation)
+
+- `ConfirmationSender& operator-=(const Reservation& res)`: remove the address of the reservation `res` from the array
+  - if the address of `res` is not in the array, this operator does nothing
+  - search the array for `res`, set the pointer in the array to `nullptr` when `res` is found. **To challenge yourself, try to actually resize the array.**
+
+
+
+
+***Friend Helpers*** 
+
+- overload the insertion operator to insert the content of a `ConfirmationSender` object into an **ostream** object:
+  - if there are no reservations to confirm:
+  ```cpp
+  --------------------------
+  Confirmations to Send
+  --------------------------
+  The object is empty!
+  --------------------------
+  ```
+  - if there are reservations to confirm
+  ```cpp
+  --------------------------
+  Confirmations to Send
+  --------------------------
+  RESERVATION
+  RESERVATION
+  ...
+  --------------------------
+  ```
+
+
+### Sample Output
+
+When the program is started with the command:
+```
+w4.exe data.txt
+```
+the output should look like:
+```
+Command Line:
+--------------------------
+  1: w4.exe
+  2: data.txt
+--------------------------
+
+Reservations
+--------------------------
+Reservation RES-001:       John  <john@email.com>        Drinks on day 3 @ 5:00 for 2 people.
+Reservation RES-002:      David  <david@email.com>       Breakfast on day 4 @ 6:00 for 1 people.
+Reservation RES-003:       Sara  <sara@email.com>        Breakfast on day 5 @ 7:00 for 2 people.
+Reservation RES-004:        Ana  <ana@email.com>         Breakfast on day 5 @ 8:00 for 1 people.
+Reservation RES-005:       John  <john@email.com>        Breakfast on day 4 @ 9:00 for 1 people.
+Reservation RES-006:    Vanessa  <vanessa@email.com>     Drinks on day 3 @ 10:00 for 2 people.
+Reservation RES-007:       Mike  <mike@email.com>        Lunch on day 4 @ 11:00 for 4 people.
+Reservation RES-008:       Mike  <mike@email.com>        Lunch on day 5 @ 12:00 for 8 people.
+Reservation RES-009:        Dan  <dan@email.com>         Lunch on day 3 @ 13:00 for 2 people.
+Reservation RES-010:      Donna  <donna@email.com>       Lunch on day 5 @ 14:00 for 5 people.
+Reservation RES-011:        Ana  <ana@email.com>         Lunch on day 4 @ 15:00 for 4 people.
+Reservation RES-012:       John  <john@email.com>        Drinks on day 5 @ 16:00 for 2 people.
+Reservation RES-013:       Sara  <sara@email.com>        Dinner on day 3 @ 17:00 for 6 people.
+Reservation RES-014:   Jennifer  <jenn@email.com>        Dinner on day 5 @ 18:00 for 6 people.
+Reservation RES-015:       Stan  <stan@email.com>        Dinner on day 4 @ 19:00 for 5 people.
+Reservation RES-016:      Chris  <chris@email.com>       Dinner on day 4 @ 20:00 for 3 people.
+Reservation RES-017:    Vanessa  <vanessa@email.com>     Dinner on day 4 @ 21:00 for 4 people.
+Reservation RES-018:      David  <david@email.com>       Drinks on day 5 @ 22:00 for 4 people.
+Reservation RES-019:      Chris  <chris@email.com>       Drinks on day 3 @ 23:00 for 1 people.
+Reservation RES-020:      Donna  <donna@email.com>       Drinks on day 4 @ 24:00 for 3 people.
+--------------------------
+
+R: Testing Constructor
+==========================
+--------------------------
+Fancy Restaurant
+--------------------------
+Reservation RES-001:       John  <john@email.com>        Drinks on day 3 @ 5:00 for 2 people.
+Reservation RES-002:      David  <david@email.com>       Breakfast on day 4 @ 6:00 for 1 people.
+Reservation RES-003:       Sara  <sara@email.com>        Breakfast on day 5 @ 7:00 for 2 people.
+Reservation RES-004:        Ana  <ana@email.com>         Breakfast on day 5 @ 8:00 for 1 people.
+Reservation RES-005:       John  <john@email.com>        Breakfast on day 4 @ 9:00 for 1 people.
+Reservation RES-006:    Vanessa  <vanessa@email.com>     Drinks on day 3 @ 10:00 for 2 people.
+Reservation RES-007:       Mike  <mike@email.com>        Lunch on day 4 @ 11:00 for 4 people.
+Reservation RES-008:       Mike  <mike@email.com>        Lunch on day 5 @ 12:00 for 8 people.
+Reservation RES-009:        Dan  <dan@email.com>         Lunch on day 3 @ 13:00 for 2 people.
+Reservation RES-010:      Donna  <donna@email.com>       Lunch on day 5 @ 14:00 for 5 people.
+Reservation RES-011:        Ana  <ana@email.com>         Lunch on day 4 @ 15:00 for 4 people.
+Reservation RES-012:       John  <john@email.com>        Drinks on day 5 @ 16:00 for 2 people.
+Reservation RES-013:       Sara  <sara@email.com>        Dinner on day 3 @ 17:00 for 6 people.
+Reservation RES-014:   Jennifer  <jenn@email.com>        Dinner on day 5 @ 18:00 for 6 people.
+Reservation RES-015:       Stan  <stan@email.com>        Dinner on day 4 @ 19:00 for 5 people.
+Reservation RES-016:      Chris  <chris@email.com>       Dinner on day 4 @ 20:00 for 3 people.
+Reservation RES-017:    Vanessa  <vanessa@email.com>     Dinner on day 4 @ 21:00 for 4 people.
+Reservation RES-018:      David  <david@email.com>       Drinks on day 5 @ 22:00 for 4 people.
+Reservation RES-019:      Chris  <chris@email.com>       Drinks on day 3 @ 23:00 for 1 people.
+Reservation RES-020:      Donna  <donna@email.com>       Drinks on day 4 @ 24:00 for 3 people.
+--------------------------
+==========================
+
+R: Testing Copy Constructor
+==========================
+--------------------------
+Fancy Restaurant
+--------------------------
+Reservation RES-001:       John  <john@email.com>        Drinks on day 3 @ 5:00 for 2 people.
+Reservation RES-002:      David  <david@email.com>       Breakfast on day 4 @ 6:00 for 1 people.
+Reservation RES-003:       Sara  <sara@email.com>        Breakfast on day 5 @ 7:00 for 2 people.
+Reservation RES-004:        Ana  <ana@email.com>         Breakfast on day 5 @ 8:00 for 1 people.
+Reservation RES-005:       John  <john@email.com>        Breakfast on day 4 @ 9:00 for 1 people.
+Reservation RES-006:    Vanessa  <vanessa@email.com>     Drinks on day 3 @ 10:00 for 2 people.
+Reservation RES-007:       Mike  <mike@email.com>        Lunch on day 4 @ 11:00 for 4 people.
+Reservation RES-008:       Mike  <mike@email.com>        Lunch on day 5 @ 12:00 for 8 people.
+Reservation RES-009:        Dan  <dan@email.com>         Lunch on day 3 @ 13:00 for 2 people.
+Reservation RES-010:      Donna  <donna@email.com>       Lunch on day 5 @ 14:00 for 5 people.
+Reservation RES-011:        Ana  <ana@email.com>         Lunch on day 4 @ 15:00 for 4 people.
+Reservation RES-012:       John  <john@email.com>        Drinks on day 5 @ 16:00 for 2 people.
+Reservation RES-013:       Sara  <sara@email.com>        Dinner on day 3 @ 17:00 for 6 people.
+Reservation RES-014:   Jennifer  <jenn@email.com>        Dinner on day 5 @ 18:00 for 6 people.
+Reservation RES-015:       Stan  <stan@email.com>        Dinner on day 4 @ 19:00 for 5 people.
+Reservation RES-016:      Chris  <chris@email.com>       Dinner on day 4 @ 20:00 for 3 people.
+Reservation RES-017:    Vanessa  <vanessa@email.com>     Dinner on day 4 @ 21:00 for 4 people.
+Reservation RES-018:      David  <david@email.com>       Drinks on day 5 @ 22:00 for 4 people.
+Reservation RES-019:      Chris  <chris@email.com>       Drinks on day 3 @ 23:00 for 1 people.
+Reservation RES-020:      Donna  <donna@email.com>       Drinks on day 4 @ 24:00 for 3 people.
+--------------------------
+--------------------------
+Fancy Restaurant
+--------------------------
+Reservation RES-001:       John  <john@email.com>        Drinks on day 3 @ 5:00 for 2 people.
+Reservation RES-002:      David  <david@email.com>       Breakfast on day 4 @ 6:00 for 1 people.
+Reservation RES-003:       Sara  <sara@email.com>        Breakfast on day 5 @ 7:00 for 2 people.
+Reservation RES-004:        Ana  <ana@email.com>         Breakfast on day 5 @ 8:00 for 1 people.
+Reservation RES-005:       John  <john@email.com>        Breakfast on day 4 @ 9:00 for 1 people.
+Reservation RES-006:    Vanessa  <vanessa@email.com>     Drinks on day 3 @ 10:00 for 2 people.
+Reservation RES-007:       Mike  <mike@email.com>        Lunch on day 4 @ 11:00 for 4 people.
+Reservation RES-008:       Mike  <mike@email.com>        Lunch on day 5 @ 12:00 for 8 people.
+Reservation RES-009:        Dan  <dan@email.com>         Lunch on day 3 @ 13:00 for 2 people.
+Reservation RES-010:      Donna  <donna@email.com>       Lunch on day 5 @ 14:00 for 5 people.
+Reservation RES-011:        Ana  <ana@email.com>         Lunch on day 4 @ 15:00 for 4 people.
+Reservation RES-012:       John  <john@email.com>        Drinks on day 5 @ 16:00 for 2 people.
+Reservation RES-013:       Sara  <sara@email.com>        Dinner on day 3 @ 17:00 for 6 people.
+Reservation RES-014:   Jennifer  <jenn@email.com>        Dinner on day 5 @ 18:00 for 6 people.
+Reservation RES-015:       Stan  <stan@email.com>        Dinner on day 4 @ 19:00 for 5 people.
+Reservation RES-016:      Chris  <chris@email.com>       Dinner on day 4 @ 20:00 for 3 people.
+Reservation RES-017:    Vanessa  <vanessa@email.com>     Dinner on day 4 @ 21:00 for 4 people.
+Reservation RES-018:      David  <david@email.com>       Drinks on day 5 @ 22:00 for 4 people.
+Reservation RES-019:      Chris  <chris@email.com>       Drinks on day 3 @ 23:00 for 1 people.
+Reservation RES-020:      Donna  <donna@email.com>       Drinks on day 4 @ 24:00 for 3 people.
+--------------------------
+==========================
+
+R: Testing Move Constructor
+==========================
+--------------------------
+Fancy Restaurant
+--------------------------
+The object is empty!
+--------------------------
+--------------------------
+Fancy Restaurant
+--------------------------
+Reservation RES-001:       John  <john@email.com>        Drinks on day 3 @ 5:00 for 2 people.
+Reservation RES-002:      David  <david@email.com>       Breakfast on day 4 @ 6:00 for 1 people.
+Reservation RES-003:       Sara  <sara@email.com>        Breakfast on day 5 @ 7:00 for 2 people.
+Reservation RES-004:        Ana  <ana@email.com>         Breakfast on day 5 @ 8:00 for 1 people.
+Reservation RES-005:       John  <john@email.com>        Breakfast on day 4 @ 9:00 for 1 people.
+Reservation RES-006:    Vanessa  <vanessa@email.com>     Drinks on day 3 @ 10:00 for 2 people.
+Reservation RES-007:       Mike  <mike@email.com>        Lunch on day 4 @ 11:00 for 4 people.
+Reservation RES-008:       Mike  <mike@email.com>        Lunch on day 5 @ 12:00 for 8 people.
+Reservation RES-009:        Dan  <dan@email.com>         Lunch on day 3 @ 13:00 for 2 people.
+Reservation RES-010:      Donna  <donna@email.com>       Lunch on day 5 @ 14:00 for 5 people.
+Reservation RES-011:        Ana  <ana@email.com>         Lunch on day 4 @ 15:00 for 4 people.
+Reservation RES-012:       John  <john@email.com>        Drinks on day 5 @ 16:00 for 2 people.
+Reservation RES-013:       Sara  <sara@email.com>        Dinner on day 3 @ 17:00 for 6 people.
+Reservation RES-014:   Jennifer  <jenn@email.com>        Dinner on day 5 @ 18:00 for 6 people.
+Reservation RES-015:       Stan  <stan@email.com>        Dinner on day 4 @ 19:00 for 5 people.
+Reservation RES-016:      Chris  <chris@email.com>       Dinner on day 4 @ 20:00 for 3 people.
+Reservation RES-017:    Vanessa  <vanessa@email.com>     Dinner on day 4 @ 21:00 for 4 people.
+Reservation RES-018:      David  <david@email.com>       Drinks on day 5 @ 22:00 for 4 people.
+Reservation RES-019:      Chris  <chris@email.com>       Drinks on day 3 @ 23:00 for 1 people.
+Reservation RES-020:      Donna  <donna@email.com>       Drinks on day 4 @ 24:00 for 3 people.
+--------------------------
+==========================
+
+CS: Testing Constructor
+==========================
+--------------------------
+Confirmations to Send
+--------------------------
+The object is empty!
+--------------------------
+==========================
+
+CS: Testing Operators
+==========================
+--------------------------
+Confirmations to Send
+--------------------------
+Reservation RES-006:    Vanessa  <vanessa@email.com>     Drinks on day 3 @ 10:00 for 2 people.
+Reservation RES-017:    Vanessa  <vanessa@email.com>     Dinner on day 4 @ 21:00 for 4 people.
+Reservation RES-009:        Dan  <dan@email.com>         Lunch on day 3 @ 13:00 for 2 people.
+--------------------------
+--------------------------
+Confirmations to Send
+--------------------------
+Reservation RES-006:    Vanessa  <vanessa@email.com>     Drinks on day 3 @ 10:00 for 2 people.
+Reservation RES-017:    Vanessa  <vanessa@email.com>     Dinner on day 4 @ 21:00 for 4 people.
+--------------------------
+==========================
+
+CS: Testing Copy Constructor
+==========================
+--------------------------
+Confirmations to Send
+--------------------------
+Reservation RES-006:    Vanessa  <vanessa@email.com>     Drinks on day 3 @ 10:00 for 2 people.
+Reservation RES-017:    Vanessa  <vanessa@email.com>     Dinner on day 4 @ 21:00 for 4 people.
+--------------------------
+--------------------------
+Confirmations to Send
+--------------------------
+Reservation RES-006:    Vanessa  <vanessa@email.com>     Drinks on day 3 @ 10:00 for 2 people.
+Reservation RES-017:    Vanessa  <vanessa@email.com>     Dinner on day 4 @ 21:00 for 4 people.
+--------------------------
+==========================
+
+CS: Testing Move Constructor
+==========================
+--------------------------
+Confirmations to Send
+--------------------------
+The object is empty!
+--------------------------
+--------------------------
+Confirmations to Send
+--------------------------
+Reservation RES-006:    Vanessa  <vanessa@email.com>     Drinks on day 3 @ 10:00 for 2 people.
+Reservation RES-017:    Vanessa  <vanessa@email.com>     Dinner on day 4 @ 21:00 for 4 people.
+--------------------------
+==========================
 ```
 
-Create a Module for a NameTag to create/read information for a name tag and print it.
 
-The class name must be **NameTag**.
 
-It should be able to hold two pieces of information; A name and a 5 digit extension number. The name should be kept dynamically; however if the name is longer than 40 characters, only 40 characters should be used. 
-> After dynamically allocating the name, you can easily do this by setting the 40th character in the name to null if the length of the name is longer than 40.
+### Reflection
 
-Also if the name is shorter than 20 characters, it should be printed in 20 spaces. The extension number is optional and if not provided, it should be printed as **N/A**.
+Study your final solution, reread the related parts of the course notes, and make sure that you have understood the concepts covered by this workshop. **This should take no less than 30 minutes of your time and the result is suggested to be at least 150 words in length.**
 
-Print the name tag by drawing a box around it. The box must have five interior lines and the name should have exactly one space distance with the line of the box at left and minimum of one space with the line at right. The name and the extension are printed on lines 2 and 4 and the rest of the name tag is filled with spaces.
+Create a **text** file named `reflect.txt` that contains your detailed description of the topics that you have learned in completing this particular workshop and mention any issues that caused you difficulty and how you solved them. Include in your explanation—**but do not limit it to**—the following points:
+- the difference between the implementations of a composition and an aggregation.
+- the difference between the implementations of move and copy functions in a composition and an aggregation.
 
-Here are couple of examples: <br />
-(Name: "Fred Soley", extension 12345):
-```Text
-************************
-*                      *
-* Fred Soley           *
-*                      *
-* Extension: 12345     *
-*                      *
-************************
+To avoid deductions, refer to code in your solution as examples to support your explanations.
 
-```
-(Name: "David Wright Mason Gilmour Waters Rogers Nick", extension not available)
-```Text
-********************************************
-*                                          *
-* David Wright Mason Gilmour Waters Rogers *
-*                                          *
-* Extension: N/A                           *
-*                                          *
-********************************************
-```
 
-If the data provided are invalid, (name being null or extensions being more or less than 5 digits) the printout will be:
-```Text
-EMPTY NAMETAG!
-```
 
-## Public and mandatory functions, constructors and destructor
-### constructors
-- default constructor (for an empty tag)
-- constructor with one argument to set the name without extension number
-- constructor with two arguments to set the name and the extension
 
-### destructor
-- have a destructor to avoid memory leaks
 
-## Functions:
-### print
-a function called **print** to print the name tag as shown above
+### Submission
 
-### read
-a function called **read** that receives the name and then the extension number and then returns the reference of the current object (NameTag&).
+To test and demonstrate execution of your program use the same data as shown in the output example above.
 
-Read function should read the name up to the maximum of 40 characters and ignore the rest and then set the name of the **NameTag** to the entered name. <br />
-(This may overwrite an already existing name in the **NameTag**)<br />
-Then it should give an option to the user to enter the extension number or not. If the user chooses to enter the extension it should enforce the user to enter a 5 digit integer and if user does not comply, it should print the following message:<br />
-```Text
-Invalid value [10000<=value<=99999]: 
-```
-and get the new value and repeat until the user enters a correct value. 
-
-A sample for execution is provided below; Note that the **read()** execution is demonstrated right before the name tag printouts.
-
-```Text
-Please enter the name: Fred Soley
-Would you like to enter an extension? (Y)es/(N)o: n
-************************
-*                      *
-* Fred Soley           *
-*                      *
-* Extension: N/A       *
-*                      *
-************************
-Please enter the name: David Wright Mason Gilmour Waters Rogers Nick
-Would you like to enter an extension? (Y)es/(N)o: y
-Please enter a 5 digit phone extension: 9999
-Invalid value [10000<=value<=99999]: 1000000
-Invalid value [10000<=value<=99999]: 65432
-********************************************
-*                                          *
-* David Wright Mason Gilmour Waters Rogers *
-*                                          *
-* Extension: 65432                         *
-*                                          *
-********************************************
-```
-  
-##Tester program:
-```C++
-// Workshop 4:
-// Version: 0.9
-// Date: 10/09/2020
-// Author: Fardad Soleimanloo
-// Description:
-// This file tests the DIY section of your workshop
-/////////////////////////////////////////////
-#include <iostream>
-using namespace std;
-#include "NameTag.h"
-using namespace sdds;
-int main() {
-   NameTag nt[6] = {  
-      "David Wright Mason Gilmour Waters Rogers Nick", // one argument constructor
-      {"Fred Soley", 12345} ,       // two argument constructor with good data
-      {nullptr, 23456},    // two argument constructor with bad name
-      {"Bad number", 1234},  // two argument constructor with bad number
-      {"Bad number", 123456}  // two argument constructor with bad number
-                             // default constructor (sixth element)
-   };
-   int i;
-   for (i = 0; i < 6; i++) {
-      nt[i].print();
-      cout << endl;
-   }
-   nt[1].read().print();
-   nt[3].read().print();
-   nt[5].read().print();
-   return 0;
-}
-
-```
-Here is the execution sample for the tester program
-```Text
-********************************************
-*                                          *
-* David Wright Mason Gilmour Waters Rogers *
-*                                          *
-* Extension: N/A                           *
-*                                          *
-********************************************
-
-************************
-*                      *
-* Fred Soley           *
-*                      *
-* Extension: 12345     *
-*                      *
-************************
-
-EMPTY NAMETAG!
-
-EMPTY NAMETAG!
-
-EMPTY NAMETAG!
-
-EMPTY NAMETAG!
-
-Please enter the name: John Doe<ENTER>
-Would you like to enter an extension? (Y)es/(N)o: n
-************************
-*                      *
-* John Doe             *
-*                      *
-* Extension: N/A       *
-*                      *
-************************
-Please enter the name: A very very long name that is more than 40 characters<ENTER>
-Would you like to enter an extension? (Y)es/(N)o: y<ENTER>
-Please enter a 5 digit phone extension: 76543<ENTER>
-********************************************
-*                                          *
-* A very very long name that is more than  *
-*                                          *
-* Extension: 76543                         *
-*                                          *
-********************************************
-Please enter the name: Jane Doe<ENTER>
-Would you like to enter an extension? (Y)es/(N)o: y<ENTER>
-Please enter a 5 digit phone extension: 1234<ENTER>
-Invalid value [10000<=value<=99999]: 123456<ENTER>
-Invalid value [10000<=value<=99999]: 76543<ENTER>
-************************
-*                      *
-* Jane Doe             *
-*                      *
-* Extension: 76543     *
-*                      *
-************************
-```
-
-> Modify the tester program to test are the different circumstances/cases of the application if desired and note that the professor's tester may have many more samples than the tester program here.
-
-## Reflection
-
-Study your final solutions for each deliverable of the workshop, reread the related parts of the course notes, and make sure that you have understood the concepts covered by this workshop.  **This should take no less than 30 minutes of your time and the result is suggested to be at least 150 words in length.**
-
-Create a file named `reflect.txt` that contains your detailed description of the topics that you have learned in completing this workshop and mention any issues that caused you difficulty.
-
-You may be asked to talk about your reflection (as a presentation) in class.
-
-## DIY Submission (part 2)
-
-Upload your source code to your `matrix` account. Compile and run your code using the `g++` compiler as shown above and make sure that everything works properly.
+Upload the source code and the reflection file to your `matrix` account. Compile and run your code using the latest version of the `g++` compiler (available at `/usr/local/gcc/9.1.0/bin/g++`) and make sure that everything works properly.
 
 Then, run the following command from your account (replace `profname.proflastname` with your professor’s Seneca userid):
 ```
-~profname.proflastname/submit 244/w4/p2
+~profname.proflastname/submit 345_w4_p2
 ```
 and follow the instructions.
 
-> **:warning:Important:** Please note that a successful submission does not guarantee full credit for this workshop. If the professor is not satisfied with your implementation, your professor may ask you to resubmit. Re-submissions will attract a penalty.
+**:warning:Important:** Please note that a successful submission does not guarantee full credit for this workshop. If the professor is not satisfied with your implementation, your professor may ask you to resubmit. Resubmissions will attract a penalty.
