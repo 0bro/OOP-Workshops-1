@@ -1,0 +1,2 @@
+g++ -Wall -std=c++17 -g -o runMe w4_p1.cpp Reservation.cpp
+valgrind ./runMe data.txt
