@@ -261,7 +261,7 @@ Derive the `PairSummable` class template from `Pair<K, V>`. Yout template receiv
 
 - overload the `operator+=` to receive a reference to an unmodifiable `PairSummable` object, to add the value of the parameter to the value of the current object **if both objects share the same key but not the address**, and to return a reference to the current object. Otherwise, this function leaves the current object unchanged and returns a reference to it.
 
-- overload the `display(std::ostream& os)` query to set the alignment to left and the field width to that for all `K` types, then call the base class version of `display(std::ostream& os)`, and finally restore the alignment to right.
+- override the `display(std::ostream& os)` query to set the alignment to left and the field width to that for all `K` types, then call the base class version of `display(std::ostream& os)`, and finally restore the alignment to right.
 
 
 
