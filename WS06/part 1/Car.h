@@ -8,6 +8,7 @@ namespace sdds
 
     class Car : public Vehicle
     {
+        bool m_valid;
         char m_tag;
         std::string m_maker;
         std::string m_condition;
